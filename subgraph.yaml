@@ -1,0 +1,32 @@
+specVersion: 0.0.1
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: marsh_erc20
+    network: mainnet
+    source:
+      address: "0x5a666c7d92e5fa7edcb6390e4efd6d0cdd69cf37"
+      abi: marsh_erc20
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.2
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - OwnershipTransferred
+        - RecoverToken
+        - Transfer
+      abis:
+        - name: marsh_erc20
+          file: ./abis/marsh_erc20.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: RecoverToken(indexed address,indexed address,indexed uint256)
+          handler: handleRecoverToken
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/mapping.ts
